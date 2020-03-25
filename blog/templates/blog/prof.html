@@ -1,0 +1,70 @@
+﻿{% extends "blog/base.html" %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-7">
+
+
+            <h1 class="mb-3">Posts by {{ posts.author }} ({{posts.count }})out of ({{totalposts.count }})</h1>
+
+            {% for post in posts %}
+            <article class="media content-section">
+                <img class="rounded-circle mt-2 article-img" src="{{ post.author.profile.image.url }}" />
+
+                <div class="media-body">
+
+                    <div class="article-metadata">
+                        <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
+                        <small class="text-muted">{{ post.date_posted }}</small>
+                        <p> Answers: {{ post.answers.count }}</p>
+                    </div>
+                    <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.subject }}</a></h2>
+                    <p class="article-content">{{ post.question }}</p>
+                </div>
+            </article>
+
+            {% endfor %}
+
+            <h1 class="mb-3">Answers by {{ answer.author }} ({{ answers.count }})out of ({{totalanswers.count }})</h1>
+            {% for answer in answers %}
+            <article class="media content-section">
+                <img class="rounded-circle mt-2 article-img" src="{{ answer.author.profile.image.url }}" />
+
+                <div class="media-body">
+
+                    <div class="article-metadata">
+                        <h4>Question: {{ answer.post.question }}</h4>
+                        <a class="mr-2">{{ answer.author }}</a>
+                        <small class="text-muted">{{ answer.created_date }}</small>
+                        <p> Answers: {{ answer.answers.count }}</p>
+                    </div>
+                    <h2><a class="article-title">{{ answer.answer }}</a></h2>
+                    <p class="article-content">hi</p>
+                </div>
+            </article>
+
+
+            {% endfor %}
+
+    </div>
+        
+        <div class="col-md-5 mt-4">
+            <br />
+            <br />
+            <div class="chartjs-wrapper">
+                <iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+                <canvas id="chartjs-4" class="chartjs" width="718" height="358" style="display: block; height: auto; width: auto;"></canvas>
+                <script>new Chart(document.getElementById("chartjs-4"), { "type": "doughnut", "data": { "labels": ["Questions you have asked", "Questions answered by others", ], "datasets": [{ "label": "My First Dataset", "data": [{{posts.count }}, {{totalposts.count }}-{{posts.count }}], "backgroundColor": ["rgb(255, 99, 132)", "rgb(54, 162, 235)"] }] } });</script>
+            </div>
+
+            <div class="chartjs-wrapper">
+                <iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+                <canvas id="chartjs-5" class="chartjs" width="718" height="358" style="display: block; height: 287px; width: 575px;"></canvas>
+                <script>new Chart(document.getElementById("chartjs-5"), { "type": "pie", "data": { "labels": ["Answers", "Total Answers", ], "datasets": [{ "label": "My First Dataset", "data": [{{ answers.count }}, {{totalanswers.count }}-{{ answers.count }}], "backgroundColor": ["rgb(255, 99, 132)", "rgb(54, 162, 235)"] }] } });</script>
+            </div>
+
+
+        </div>
+</div>
+          
+            {% endblock content %}

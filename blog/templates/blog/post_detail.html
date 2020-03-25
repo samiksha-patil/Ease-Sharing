@@ -1,0 +1,53 @@
+﻿{% extends "blog/base.html" %}
+{% block content %}
+    <article class="media content-section">
+        <img class="rounded-circle mt-2 article-img" src="{{ object.author.profile.image.url }}" />
+        <div class="media-body">
+
+            <div class="article-metadata">
+                <a class="mr-2" href="">{{ object.author }}</a>
+                <small class="text-muted">{{ object.date_posted }}</small>
+                {% if object.author == user %}
+                <div>
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
+                    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
+
+
+                </div>
+
+                {% endif %}
+            </div>
+            <h2 class="article-title" href="#">{{object.subject }}</h2>
+            <p class="article-content">{{ object.question }}</p>
+        </div>
+    </article>
+
+<a class="btn btn-info" href="{% url 'add_answer_to_post' pk=post.pk %}">Add Answer</a>
+<br>
+<br />
+{% for answer in post.answers.all %}
+<div class="comment">
+    <article class="media">
+        <img class="rounded-circle mt-2 article-img" src="{{ answer.author.profile.image.url }}" />
+        <div class="bd-callout bd-callout-info">
+            <div class="media-body">
+
+                <a class="mr-2" href="{% url 'user-posts' object.author.username %}">{{ answer.author }}</a>
+                <small class="text-muted">{{ answer.created_date }}</small>
+                <hr>
+
+
+                <p><h4>{{ answer.answer|linebreaks }}</h4></p>
+            </div>
+        </div>
+        </article>
+</div>
+
+
+
+{% empty %}
+<p>No answers here yet :(</p>
+{% endfor %}
+
+{% endblock content %}
+

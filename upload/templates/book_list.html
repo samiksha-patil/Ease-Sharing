@@ -1,0 +1,51 @@
+﻿{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-8">
+            <h1>Books</h1>
+
+
+            <form class="form-inline" method="get" action=" ">
+                <input class="form-control mr-sm-2" type="text" name="q" placeholder="Search" value='{{ request.GET.q }}' aria-label="Search">
+                <button class="btn btn-primary  active  my-sm-0" type="submit">Search</button>
+            </form>
+            <p>
+                <a href="{% url 'upload_book' %}" class="btn btn-info">Upload Book</a>
+            </p>
+            <div class="content-section">
+                <table class="table" mb-0>
+                    <thead>
+                        <tr>
+                            <th>Cover</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Download</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for book in books %}
+                        <tr>
+                            <td>
+                                {% if book.cover %}
+                                <img src="{{ book.cover.url }}" alt="{{ book.title }}" style="width:100px;">
+                                {% else %}
+                                <span class="text-muted">No Cover</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ book.title }}</td>
+                            <td>{{ book.author }}</td>
+                            <td>
+                                <a href="{{ book.pdf.url}}" class="btn btn-info btn-sm" target="_blank">
+                                    Download Pdf
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+            {% endblock content %}
